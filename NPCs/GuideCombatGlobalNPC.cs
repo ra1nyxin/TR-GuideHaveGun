@@ -46,12 +46,7 @@ public sealed class GuideCombatGlobalNPC : GlobalNPC
 			return;
 		}
 
-		if (npc.velocity.X != 0f && Math.Sign(npc.velocity.X) == -Math.Sign(horizontalDistance)) {
-			npc.velocity.X = 0f;
-		}
-
-		npc.direction = horizontalDistance >= 0f ? 1 : -1;
-		npc.spriteDirection = npc.direction;
+		npc.velocity.X = 0f;
 	}
 
 	public override void TownNPCAttackStrength(NPC npc, ref int damage, ref float knockback)
