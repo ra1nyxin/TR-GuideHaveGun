@@ -9,13 +9,14 @@ namespace GuideHaveGun.NPCs;
 
 public sealed class GuideCombatGlobalNPC : GlobalNPC
 {
+	private const int GuideLifeMax = 1000;
 	private const int GuideDangerDetectRange = 1200;
 	private const int GuideAttackStartRange = 1200;
 	private const float GuideStandGroundRange = 240f;
 	private const int GuideShotDamage = 28;
 	private const float GuideShotKnockback = 4f;
-	private const int GuideCooldownBase = 2;
-	private const int GuideCooldownRandom = 2;
+	private const int GuideCooldownBase = 1;
+	private const int GuideCooldownRandom = 1;
 	private const int GuideProjectileType = ProjectileID.Bullet;
 	private const int GuideProjectileDelay = 1;
 	private const float GuideProjectileSpeed = 16f;
@@ -47,6 +48,16 @@ public sealed class GuideCombatGlobalNPC : GlobalNPC
 		}
 
 		npc.velocity.X = 0f;
+	}
+
+	public override void SetDefaults(NPC npc)
+	{
+		if (npc.type != NPCID.Guide) {
+			return;
+		}
+
+		npc.lifeMax = GuideLifeMax;
+		npc.life = GuideLifeMax;
 	}
 
 	public override void TownNPCAttackStrength(NPC npc, ref int damage, ref float knockback)
