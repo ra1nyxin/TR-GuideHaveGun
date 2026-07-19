@@ -1,0 +1,3 @@
+displayName = GuideHaveGun
+author = ra1nyxin
+version = 0.1

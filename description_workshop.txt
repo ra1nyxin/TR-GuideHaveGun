@@ -1,0 +1,5 @@
+这个模组把原版向导的默认远程武器从弓改成战术霰弹枪。 | This mod changes the vanilla Guide's default ranged weapon from a bow to a Tactical Shotgun.
+向导会发射子弹，并且每次攻击后的等待时间更短。 | The Guide fires bullets and waits less time between attacks.
+向导识别并攻击敌怪的距离提高到默认值的三倍。 | The Guide's enemy detection and attack distance is increased to three times the default value.
+改动范围只限向导自身的城镇 NPC 攻击参数与武器绘制。 | The changes are limited to the Guide's town NPC attack parameters and weapon draw behavior.
+适合想让开局向导更能自保、也更能帮玩家清理周围敌怪的流程。 | This fits playthroughs where the early-game Guide should defend himself better and help clear nearby enemies.
