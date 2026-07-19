@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -8,11 +9,13 @@ namespace GuideHaveGun.NPCs;
 
 public sealed class GuideCombatGlobalNPC : GlobalNPC
 {
-	private const int GuideDangerDetectRange = 600;
+	private const int GuideDangerDetectRange = 1200;
+	private const int GuideAttackStartRange = 1200;
+	private const float GuideStandGroundRange = 240f;
 	private const int GuideShotDamage = 28;
 	private const float GuideShotKnockback = 4f;
-	private const int GuideCooldownBase = 4;
-	private const int GuideCooldownRandom = 4;
+	private const int GuideCooldownBase = 2;
+	private const int GuideCooldownRandom = 2;
 	private const int GuideProjectileType = ProjectileID.Bullet;
 	private const int GuideProjectileDelay = 1;
 	private const float GuideProjectileSpeed = 16f;
@@ -22,6 +25,33 @@ public sealed class GuideCombatGlobalNPC : GlobalNPC
 	public override void SetStaticDefaults()
 	{
 		NPCID.Sets.DangerDetectRange[NPCID.Guide] = GuideDangerDetectRange;
+		NPCID.Sets.PrettySafe[NPCID.Guide] = GuideAttackStartRange;
+	}
+
+	public override void AI(NPC npc)
+	{
+		if (npc.type != NPCID.Guide) {
+			return;
+		}
+
+		NPC target = FindNearestHostile(npc, GuideAttackStartRange);
+
+		if (target is null) {
+			return;
+		}
+
+		float horizontalDistance = target.Center.X - npc.Center.X;
+
+		if (Math.Abs(horizontalDistance) > GuideStandGroundRange) {
+			return;
+		}
+
+		if (npc.velocity.X != 0f && Math.Sign(npc.velocity.X) == -Math.Sign(horizontalDistance)) {
+			npc.velocity.X = 0f;
+		}
+
+		npc.direction = horizontalDistance >= 0f ? 1 : -1;
+		npc.spriteDirection = npc.direction;
 	}
 
 	public override void TownNPCAttackStrength(NPC npc, ref int damage, ref float knockback)
@@ -74,5 +104,30 @@ public sealed class GuideCombatGlobalNPC : GlobalNPC
 		Main.GetItemDrawFrame(GuideWeaponType, out item, out itemFrame);
 		scale = 1f;
 		horizontalHoldoutOffset = (int)Main.DrawPlayerItemPos(scale, GuideWeaponType).X - 6;
+	}
+
+	private static NPC FindNearestHostile(NPC npc, float maxDistance)
+	{
+		NPC nearestTarget = null;
+		float bestDistanceSquared = maxDistance * maxDistance;
+
+		for (int index = 0; index < Main.maxNPCs; index++) {
+			NPC possibleTarget = Main.npc[index];
+
+			if (!possibleTarget.active || !possibleTarget.CanBeChasedBy(npc)) {
+				continue;
+			}
+
+			float currentDistanceSquared = Vector2.DistanceSquared(npc.Center, possibleTarget.Center);
+
+			if (currentDistanceSquared >= bestDistanceSquared) {
+				continue;
+			}
+
+			bestDistanceSquared = currentDistanceSquared;
+			nearestTarget = possibleTarget;
+		}
+
+		return nearestTarget;
 	}
 }

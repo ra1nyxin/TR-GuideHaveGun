@@ -1,1 +1,1 @@
-向导改用战术霰弹枪，攻击更快，索敌更远。 | The Guide uses a Tactical Shotgun, attacks faster, and detects enemies from farther away.
+向导改用战术霰弹枪，攻击更快，索敌更远，也更少后撤。 | The Guide uses a Tactical Shotgun, attacks faster, detects enemies from farther away, and retreats less.
